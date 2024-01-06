@@ -19,13 +19,12 @@ public class DBConnection {
 			String username = "sa";
 			String password = "123";
 			c = DriverManager.getConnection(url, username, password);
-			System.out.println("Ket noi thanh cong!");
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
 
-		return null;
+		return c;
 	}
 
 }

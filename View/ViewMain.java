@@ -12,11 +12,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -27,7 +27,6 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -35,13 +34,15 @@ import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import DBConnection.DBConnection;
 
-
-public class View extends JFrame implements ActionListener {
-	public View() {
+public class ViewMain extends JFrame implements ActionListener {
+	public ViewMain() {
 		this.init();
 		this.setTitle("Quản Lý Bãi Giữ Xe");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -56,7 +57,7 @@ public class View extends JFrame implements ActionListener {
 		pnCenter.setLayout(new CardLayout());
 
 		// SET ICON NOTEPAD
-		URL urlIcon = View.class.getResource("icons8-parking-lot-96.png");
+		URL urlIcon = ViewMain.class.getResource("icons8-parking-lot-96.png");
 		Image img = Toolkit.getDefaultToolkit().createImage(urlIcon);
 		this.setIconImage(img);
 
@@ -66,17 +67,22 @@ public class View extends JFrame implements ActionListener {
 		JMenuBar menu = new JMenuBar();
 		setJMenuBar(menu);
 		menu.setBackground(Color.LIGHT_GRAY);
-		JButton menuHome = new JButton("Trang chủ");
-		menuHome.setBackground(Color.LIGHT_GRAY);
-		menuHome.setIcon(new ImageIcon(View.class.getResource("/Icon/icons8-home-20.png")));
+		JMenu menuHome = new JMenu("Trang chủ");
+		menuHome.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-home-20.png")));
+		JMenuItem menuTrangchu = new JMenuItem("Trang chủ");
+		menuTrangchu.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-home-20.png")));
+		JMenuItem menuExit = new JMenuItem("Thoát");
+		menuExit.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-exit-20.png")));
 		JMenu menuEdit = new JMenu("Chức năng");
-		menuEdit.setIcon(new ImageIcon(View.class.getResource("/Icon/icons8-feature-20.png")));
+		menuEdit.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-feature-20.png")));
 		JMenuItem menuManage = new JMenuItem("Quản lý");
-		menuManage.setIcon(new ImageIcon(View.class.getResource("/Icon/icons8-find-user-male-20.png")));
+		menuManage.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-find-user-male-20.png")));
 		JMenuItem menuRegister = new JMenuItem("Đăng kí vé tháng");
-		menuRegister.setIcon(new ImageIcon(View.class.getResource("/Icon/icons8-register-20.png")));
+		menuRegister.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-register-20.png")));
 		JMenuItem menuThongke = new JMenuItem("Thống kê");
-		menuThongke.setIcon(new ImageIcon(View.class.getResource("/Icon/icons8-circle-chart-20.png")));
+		menuThongke.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-circle-chart-20.png")));
+		menuHome.add(menuTrangchu);
+		menuHome.add(menuExit);
 		menuEdit.add(menuManage);
 		menuEdit.add(menuRegister);
 		menuEdit.add(menuThongke);
@@ -91,7 +97,7 @@ public class View extends JFrame implements ActionListener {
 		pnCard1.setLayout(new BorderLayout());
 		JPanel pnback = new JPanel();
 		JLabel jlback = new JLabel();
-		jlback.setIcon(new ImageIcon(View.class.getResource("/Icon/BackHome.png")));
+		jlback.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/BackHome.png")));
 		pnback.add(jlback);
 		pnCard1.add(pnback);
 
@@ -117,7 +123,7 @@ public class View extends JFrame implements ActionListener {
 		JLabel jlma = new JLabel("Mã thẻ        ");
 		JTextField jtma = new JTextField(15);
 		JButton btSearch = new JButton("Tìm kiếm");
-		btSearch.setIcon(new ImageIcon(View.class.getResource("/Icon/icons8-find-20.png")));
+		btSearch.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-find-20.png")));
 		btSearch.setFont(new java.awt.Font("Arial", Font.BOLD + Font.ITALIC, 14));
 
 		// ADD HOP TIM KIEM
@@ -136,8 +142,8 @@ public class View extends JFrame implements ActionListener {
 		jpInf.setBorder(borderTitle2);
 
 		// HOP THONG TIN
-		JLabel jlBs = new JLabel("    Biển số xe");
-		JLabel jlmathe = new JLabel("          Mã thẻ");
+		JLabel jlBs = new JLabel("          Biển số xe");
+		JLabel jlmathe = new JLabel("    Mã thẻ");
 		JLabel jlloaixe = new JLabel("    Loại xe");
 		JLabel jlgia = new JLabel("          Giá vé");
 		JLabel jlmau = new JLabel("    Màu xe");
@@ -146,13 +152,14 @@ public class View extends JFrame implements ActionListener {
 		JTextField jtgia = new JTextField(18);
 		JTextField jtmau = new JTextField(18);
 		JButton jbthem = new JButton("Thêm");
-		jbthem.setIcon(new ImageIcon(View.class.getResource("/Icon/icons8-add-20.png")));
+		Timestamp date1 = new Timestamp(System.currentTimeMillis());
+		jbthem.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-add-20.png")));
 		jbthem.setFont(new java.awt.Font("Arial", Font.BOLD + Font.ITALIC, 14));
 		JButton jbsua = new JButton("Sửa");
-		jbsua.setIcon(new ImageIcon(View.class.getResource("/Icon/icons8-update-20.png")));
+		jbsua.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-update-20.png")));
 		jbsua.setFont(new java.awt.Font("Arial", Font.BOLD + Font.ITALIC, 14));
 		JButton jbxoa = new JButton("Xóa");
-		jbxoa.setIcon(new ImageIcon(View.class.getResource("/Icon/icons8-cancel-20.png")));
+		jbxoa.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-cancel-20.png")));
 		jbxoa.setFont(new java.awt.Font("Arial", Font.BOLD + Font.ITALIC, 14));
 
 		// JCOMBOBOX LOAI XE
@@ -165,10 +172,10 @@ public class View extends JFrame implements ActionListener {
 		// ADD HOP THONG TIN
 		JPanel jpthongtin = new JPanel();
 		jpthongtin.setLayout(new GridLayout(3, 4, 0, 5));
-		jpthongtin.add(jlBs);
-		jpthongtin.add(jtBS);
 		jpthongtin.add(jlmathe);
 		jpthongtin.add(jtmathe);
+		jpthongtin.add(jlBs);
+		jpthongtin.add(jtBS);
 		jpthongtin.add(jlloaixe);
 		jpthongtin.add(cbloaixe);
 		jpthongtin.add(jlgia);
@@ -203,11 +210,7 @@ public class View extends JFrame implements ActionListener {
 		dm.addColumn("Thời gian ra");
 
 		try {
-			String url = "jdbc:sqlserver://DESKTOP-12J6D6C\\SQLEXPRESS;databaseName=Quanlybaigiuxe;"
-					+ "portNumber=1433;encrypt=true;trustServerCertificate=true;sslProtocol=TLSv1.2";
-			String username = "sa";
-			String password = "123";
-			Connection c = DriverManager.getConnection(url, username, password);
+			Connection c = DBConnection.getConnection();
 			Statement statement = c.createStatement();
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM Quanly");
 
@@ -233,6 +236,8 @@ public class View extends JFrame implements ActionListener {
 		}
 
 		final JTable tbl = new JTable(dm);
+		TableRowSorter<DefaultTableModel> row1 = new TableRowSorter<>(dm);
+		tbl.setRowSorter(row1);
 		JScrollPane sc = new JScrollPane(tbl);
 		jpTable.add(sc);
 		jp.add(jpInf, BorderLayout.CENTER);
@@ -243,8 +248,6 @@ public class View extends JFrame implements ActionListener {
 		jp1.add(jpTable, BorderLayout.CENTER);
 		pnCard2.add(jp1);
 
-		
-		
 		// ADD BUTTON THEM
 		jbthem.addActionListener(new ActionListener() {
 			@Override
@@ -254,42 +257,67 @@ public class View extends JFrame implements ActionListener {
 				String loaixe = (String) cbloaixe.getSelectedItem();
 				String mauxe = jtmau.getText();
 				String giave = jtgia.getText();
+				String sql = "INSERT INTO Quanly ([Mã thẻ],[Biển số xe],[Loại xe],[Màu xe],[Giá vé],[Thời gian vào]) VALUES (?,?,?,?,?,?)";
+
 				try {
-					String url = "jdbc:sqlserver://DESKTOP-12J6D6C\\SQLEXPRESS;databaseName=Quanlybaigiuxe;"
-							+ "portNumber=1433;encrypt=true;trustServerCertificate=true;sslProtocol=TLSv1.2";
-					String username = "sa";
-					String password = "123";
-					Connection c = DriverManager.getConnection(url, username, password);
-					String sql = "INSERT INTO Quanly (Mã thẻ, Biển số xe, Loại xe ,Màu xe, Giá vé, Thời gian vào, Thời gian ra)"
-							+ "VALUES (" + mathe + " , '" + bienso + "' , '" + loaixe + "' , '" + mauxe
-							+ "' , " + giave +  "')";
-		            try (Statement statement = c.prepareStatement(sql)) {
-		                ((PreparedStatement) statement).setString(1, mathe);
-		                ((PreparedStatement) statement).setString(2, bienso);
-		                ((PreparedStatement) statement).setString(3, loaixe);
-		                ((PreparedStatement) statement).setString(4, mauxe);
-		                ((PreparedStatement) statement).setString(5, giave);
-		                statement.executeUpdate(sql);
-//		                JOptionPane.showMessageDialog(this, "Data added successfully.");
-		            	jtmathe.setText("");
-						jtBS.setText("");
-						cbloaixe.setSelectedItem(cbloaixe);
-						jtmau.setText("");
-						jtgia.setText("");
-		            }
-		        } catch (SQLException ex) {
-		            ex.printStackTrace();
-//		            JOptionPane.showMessageDialog(this, "Failed to add data.");
-		        }
-//				Date thoigianvao = rs.getDate("Thời gian vào");
-//				Date thoigianra = rs.getDate("Thời gian ra");
-//				dm.addRow(new Object[] { mathe, bienso, loaixe, mauxe, giave });
-//
-//				jtmathe.setText("");
-//				jtBS.setText("");
-//				cbloaixe.setSelectedItem(cbloaixe);
-//				jtmau.setText("");
-//				jtgia.setText("");
+					Connection c = DBConnection.getConnection();
+					PreparedStatement preparedStatement = c.prepareStatement(sql);
+					preparedStatement.setString(1, mathe);
+					preparedStatement.setString(2, bienso);
+					preparedStatement.setString(3, loaixe);
+					preparedStatement.setString(4, mauxe);
+					preparedStatement.setString(5, giave);
+					preparedStatement.setTimestamp(6, date1);
+					preparedStatement.executeUpdate();
+					dm.addRow(new Object[] { mathe, bienso, loaixe, mauxe, giave, date1 });
+
+				} catch (SQLException e2) {
+					e2.printStackTrace();
+				}
+
+
+				jtmathe.setText("");
+				jtBS.setText("");
+				cbloaixe.setSelectedItem(cbloaixe);
+				jtmau.setText("");
+				jtgia.setText("");
+
+			}
+		});
+
+		// ADD BUTTON SUA
+		jbsua.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String mathe = jtmathe.getText();
+				String bienso = jtBS.getText();
+				String loaixe = (String) cbloaixe.getSelectedItem();
+				String mauxe = jtmau.getText();
+				String giave = jtgia.getText();
+				String sql = "UPDATE Quanly SET [Biển số xe] = ?, [Loại xe] = ?, [Màu xe] = ?, [Giá vé] = ?  WHERE [Mã thẻ] = ?";
+
+				try {
+					Connection c = DBConnection.getConnection();
+					PreparedStatement preparedStatement = c.prepareStatement(sql);
+					preparedStatement.setString(1, bienso);
+					preparedStatement.setString(2, loaixe);
+					preparedStatement.setString(3, mauxe);
+					preparedStatement.setString(4, giave);
+					preparedStatement.setString(5, mathe);
+					preparedStatement.executeUpdate();
+					int rowupdate = tbl.getSelectedRow();
+					if (rowupdate != -1) {
+						dm.setValueAt(Integer.parseInt(mathe), rowupdate, 0);
+						dm.setValueAt(bienso, rowupdate, 1);
+						dm.setValueAt(loaixe, rowupdate, 2);
+						dm.setValueAt(mauxe, rowupdate, 3);
+						dm.setValueAt(Integer.parseInt(giave), rowupdate, 4);
+
+					}
+				} catch (SQLException e2) {
+					e2.printStackTrace();
+				}
 
 			}
 		});
@@ -298,73 +326,57 @@ public class View extends JFrame implements ActionListener {
 		jbxoa.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int selectedRow = tbl.getSelectedRow();
-				dm.removeRow(selectedRow);
+				String mathe = jtmathe.getText();
+				String sql = "DELETE FROM Quanly WHERE [Mã thẻ] = ?";
+
+				try {
+					Connection c = DBConnection.getConnection();
+					PreparedStatement preparedStatement = c.prepareStatement(sql);
+					preparedStatement.setString(1, mathe);
+					preparedStatement.executeUpdate();
+					int selectedRow = tbl.getSelectedRow();
+					dm.removeRow(selectedRow);
+				} catch (SQLException e2) {
+					e2.printStackTrace();
+				}
 			}
-
 		});
-		
 
-//		// NHAN HIEN THONG TIN TABLE
-//		tbl.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-//
-//			@Override
-//			public void valueChanged(ListSelectionEvent e) {
-//				// TODO Auto-generated method stub
-//				int iroww = tbl.getSelectedRow();
-//				String mathe = tbl.getValueAt(iroww, 0).toString();
-//				String bienso = tbl.getValueAt(iroww, 1).toString();
-//				String loaixe = (String) tbl.getValueAt(iroww, 2).toString();
-//				String mauxe = tbl.getValueAt(iroww, 3).toString();
-//				String giave = tbl.getValueAt(iroww, 4).toString();
-//
-//				jtmathe.setText(mathe);
-//				jtBS.setText(bienso);
-//				cbloaixe.setSelectedItem(loaixe);
-//				jtmau.setText(mauxe);
-//				jtgia.setText(giave);
-//			}
-//		});
-		
-		
+		// NHAN HIEN THONG TIN TABLE
+		tbl.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				int iroww = tbl.getSelectedRow();
+				if (iroww != -1) {
+					String mathe = tbl.getValueAt(iroww, 0).toString();
+					String bienso = tbl.getValueAt(iroww, 1).toString();
+					String loaixe = (String) tbl.getValueAt(iroww, 2).toString();
+					String mauxe = tbl.getValueAt(iroww, 3).toString();
+					String giave = tbl.getValueAt(iroww, 4).toString();
+
+					jtmathe.setText(mathe);
+					jtBS.setText(bienso);
+					cbloaixe.setSelectedItem(loaixe);
+					jtmau.setText(mauxe);
+					jtgia.setText(giave);
+				}
+			}
+		});
+
 		// ADD BUTTON TIM KIEM
-		 btSearch.addActionListener(new ActionListener() {
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	              String mathe = jtma.getText();
-	        try {
-	        	String url = "jdbc:sqlserver://DESKTOP-12J6D6C\\SQLEXPRESS;databaseName=Quanlybaigiuxe;"
-						+ "portNumber=1433;encrypt=true;trustServerCertificate=true;sslProtocol=TLSv1.2";
-				String username = "sa";
-				String password = "123";
-				Connection c = DriverManager.getConnection(url, username, password);
-	            String sql = "SELECT * FROM Quanly WHERE Mã thẻ LIKE ?";
-	            PreparedStatement statement = c.prepareStatement(sql);
-	            statement.setString(1, "%" + mathe + "%");
-	            ResultSet resultSet = statement.executeQuery();
-	            
-	            while (resultSet.next()) {
-	            	Object[] row = new Object[7];
-					row[0] = resultSet.getObject(1);
-					row[1] = resultSet.getObject(2);
-					row[2] = resultSet.getObject(3);
-					row[3] = resultSet.getObject(4);
-					row[4] = resultSet.getObject(5);
-					row[5] = resultSet.getObject(6);
-					row[6] = resultSet.getObject(7);
-					resultSet.close();
-					statement.close();
-					c.close();
-	            }
+		btSearch.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String mathe = jtma.getText();
+				if (mathe.trim().length() == 0) {
+					row1.setRowFilter(null);
+				} else {
+					row1.setRowFilter(RowFilter.regexFilter(mathe));
+				}
+			}
+		});
 
-	        } catch (SQLException ex) {
-	            ex.printStackTrace();
-	        }  
-	            }
-	        });
-
-		
-		
 		// CARD 3
 		final JPanel pnCard3 = new JPanel();
 		pnCard3.setLayout(new BorderLayout());
@@ -398,6 +410,7 @@ public class View extends JFrame implements ActionListener {
 		JTextField jtTenKH = new JTextField(20);
 		JTextField jtBSX = new JTextField(20);
 		JTextField jtSdt = new JTextField(20);
+		Timestamp date2 = new Timestamp(System.currentTimeMillis());
 		// JCONBOBOX LOAI XE
 		JComboBox<String> cbloaixe1 = new JComboBox<String>();
 		cbloaixe1.addItem("Xe ô tô");
@@ -407,13 +420,13 @@ public class View extends JFrame implements ActionListener {
 		JTextField jtMauxeThang = new JTextField(20);
 		JTextField jtGiaveThang = new JTextField(20);
 		JButton btThem = new JButton("Thêm");
-		btThem.setIcon(new ImageIcon(View.class.getResource("/Icon/icons8-add-20.png")));
+		btThem.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-add-20.png")));
 		btThem.setFont(new java.awt.Font("Arial", Font.BOLD + Font.ITALIC, 14));
 		JButton btSua = new JButton("Sửa");
-		btSua.setIcon(new ImageIcon(View.class.getResource("/Icon/icons8-update-20.png")));
+		btSua.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-update-20.png")));
 		btSua.setFont(new java.awt.Font("Arial", Font.BOLD + Font.ITALIC, 14));
 		JButton btXoa = new JButton("Xóa");
-		btXoa.setIcon(new ImageIcon(View.class.getResource("/Icon/icons8-cancel-20.png")));
+		btXoa.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-cancel-20.png")));
 		btXoa.setFont(new java.awt.Font("Arial", Font.BOLD + Font.ITALIC, 14));
 
 		// ADD THONG TIN
@@ -449,7 +462,7 @@ public class View extends JFrame implements ActionListener {
 		JLabel jlmave = new JLabel("Mã thẻ        ");
 		JTextField jtmave = new JTextField(15);
 		JButton btSearch2 = new JButton("Tìm kiếm");
-		btSearch2.setIcon(new ImageIcon(View.class.getResource("/Icon/icons8-find-20.png")));
+		btSearch2.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-find-20.png")));
 		btSearch2.setFont(new java.awt.Font("Arial", Font.BOLD + Font.ITALIC, 14));
 
 		// ADD HOP TIM KIEM
@@ -478,17 +491,14 @@ public class View extends JFrame implements ActionListener {
 		dm1.addColumn("Loại xe");
 		dm1.addColumn("Màu Xe");
 		dm1.addColumn("Giá Vé");
+		dm1.addColumn("Ngày đăng kí");
 		try {
-			String url = "jdbc:sqlserver://DESKTOP-12J6D6C\\SQLEXPRESS;databaseName=Quanlybaigiuxe;"
-					+ "portNumber=1433;encrypt=true;trustServerCertificate=true;sslProtocol=TLSv1.2";
-			String username = "sa";
-			String password = "123";
-			Connection c = DriverManager.getConnection(url, username, password);
+			Connection c = DBConnection.getConnection();
 			Statement statement = c.createStatement();
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM Dangki");
 
 			while (resultSet.next()) {
-				Object[] row = new Object[7];
+				Object[] row = new Object[8];
 				row[0] = resultSet.getObject(1);
 				row[1] = resultSet.getObject(2);
 				row[2] = resultSet.getObject(3);
@@ -496,6 +506,7 @@ public class View extends JFrame implements ActionListener {
 				row[4] = resultSet.getObject(5);
 				row[5] = resultSet.getObject(6);
 				row[6] = resultSet.getObject(7);
+				row[7] = resultSet.getObject(8);
 
 				dm1.addRow(row);
 			}
@@ -509,18 +520,37 @@ public class View extends JFrame implements ActionListener {
 		}
 
 		final JTable tbl1 = new JTable(dm1);
+		TableRowSorter<DefaultTableModel> roww = new TableRowSorter<>(dm1);
+		tbl1.setRowSorter(roww);
 		// ADD BUTTON THEM
 		btThem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String mathe = jtMave.getText();
+				String mave = jtMave.getText();
 				String tenkh = jtTenKH.getText();
 				String biensoxe = jtBSX.getText();
 				String sdt = jtSdt.getText();
 				String loaixethang = (String) cbloaixe1.getSelectedItem();
 				String mauxethang = jtMauxeThang.getText();
 				String giavethang = jtGiaveThang.getText();
-				dm1.addRow(new Object[] { mathe, tenkh, biensoxe, sdt, loaixethang, mauxethang, giavethang });
+				String sql = "INSERT INTO Dangki ([Mã thẻ],[Tên khách hàng],[Biển số xe],[Số điện thoại],[Loại xe],[Màu xe],[Giá vé],[Ngày đăng kí]) VALUES (?,?,?,?,?,?,?,?)";
+				try {
+					Connection c = DBConnection.getConnection();
+					PreparedStatement preparedStatement = c.prepareStatement(sql);
+					preparedStatement.setString(1, mave);
+					preparedStatement.setString(2, tenkh);
+					preparedStatement.setString(3, biensoxe);
+					preparedStatement.setString(4, sdt);
+					preparedStatement.setString(5, loaixethang);
+					preparedStatement.setString(6, mauxethang);
+					preparedStatement.setString(7, giavethang);
+					preparedStatement.setTimestamp(8, date2);
+					preparedStatement.executeUpdate();
+					dm1.addRow(new Object[] { mave, tenkh, biensoxe, sdt, loaixethang, mauxethang, giavethang, date2 });
+
+				} catch (SQLException e2) {
+					e2.printStackTrace();
+				}
 
 				jtMave.setText("");
 				jtTenKH.setText("");
@@ -532,39 +562,105 @@ public class View extends JFrame implements ActionListener {
 			}
 		});
 
+		// ADD BUTTON SUA
+		btSua.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String mave = jtMave.getText();
+				String tenkh = jtTenKH.getText();
+				String biensoxe = jtBSX.getText();
+				String sdt = jtSdt.getText();
+				String loaixethang = (String) cbloaixe1.getSelectedItem();
+				String mauxethang = jtMauxeThang.getText();
+				String giavethang = jtGiaveThang.getText();
+				String sql = "UPDATE Dangki SET [Tên khách hàng] = ?, [Biển số xe] = ?, [Số điện thoại] = ?, [Loại xe] = ?, [Màu xe] = ?, [Giá vé] = ?  WHERE [Mã thẻ] = ?";
+
+				try {
+					Connection c = DBConnection.getConnection();
+					PreparedStatement preparedStatement = c.prepareStatement(sql);
+					preparedStatement.setString(1, tenkh);
+					preparedStatement.setString(2, biensoxe);
+					preparedStatement.setString(3, sdt);
+					preparedStatement.setString(4, loaixethang);
+					preparedStatement.setString(5, mauxethang);
+					preparedStatement.setString(6, giavethang);
+					preparedStatement.setString(7, mave);
+					preparedStatement.executeUpdate();
+					int rowupdate1 = tbl1.getSelectedRow();
+					if (rowupdate1 != -1) {
+						dm1.setValueAt(Integer.parseInt(mave), rowupdate1, 0);
+						dm1.setValueAt(tenkh, rowupdate1, 1);
+						dm1.setValueAt(biensoxe, rowupdate1, 2);
+						dm1.setValueAt(Integer.parseInt(sdt), rowupdate1, 3);
+						dm1.setValueAt(loaixethang, rowupdate1, 4);
+						dm1.setValueAt(mauxethang, rowupdate1, 5);
+						dm1.setValueAt(Integer.parseInt(giavethang), rowupdate1, 6);
+					}
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+
+			}
+		});
+
 		// ADD BUTTON XOA
 		btXoa.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int selectedRow = tbl1.getSelectedRow();
-				dm1.removeRow(selectedRow);
+				String mave = jtMave.getText();
+				String sql = "DELETE FROM Dangki WHERE [Mã thẻ] = ?";
+				try {
+					Connection c = DBConnection.getConnection();
+					PreparedStatement preparedStatement = c.prepareStatement(sql);
+					preparedStatement.setString(1, mave);
+					preparedStatement.executeUpdate();
+					int selectedRow = tbl1.getSelectedRow();
+					dm1.removeRow(selectedRow);
+				} catch (SQLException e2) {
+					e2.printStackTrace();
+				}
 			}
 		});
 
-//		// NHAN HIEN THONG TIN TABLE
-//		tbl1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-//
-//			@Override
-//			public void valueChanged(ListSelectionEvent e) {
-//				// TODO Auto-generated method stub
-//				int irow = tbl1.getSelectedRow();
-//				String mave = tbl1.getValueAt(irow, 0).toString();
-//				String tenkh = tbl1.getValueAt(irow, 1).toString();
-//				String biensoxe = tbl1.getValueAt(irow, 2).toString();
-//				String sdt = tbl1.getValueAt(irow, 3).toString();
-//				String loaixethang = (String) tbl1.getValueAt(irow, 4).toString();
-//				String mauxethang = tbl1.getValueAt(irow, 5).toString();
-//				String giavethang = tbl1.getValueAt(irow, 6).toString();
-//
-//				jtMave.setText(mave);
-//				jtTenKH.setText(tenkh);
-//				jtBSX.setText(biensoxe);
-//				jtSdt.setText(sdt);
-//				cbloaixe1.setSelectedItem(loaixethang);
-//				jtMauxeThang.setText(mauxethang);
-//				jtGiaveThang.setText(giavethang);
-//			}
-//		});
+		// ADD BUTTON TIM KIEM
+		btSearch2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String mave = jtmave.getText();
+				if (mave.trim().length() == 0) {
+					roww.setRowFilter(null);
+				} else {
+					roww.setRowFilter(RowFilter.regexFilter(mave));
+				}
+			}
+		});
+
+		// NHAN HIEN THONG TIN TABLE
+		tbl1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				int irow = tbl1.getSelectedRow();
+				if (irow != -1) {
+					String mave = tbl1.getValueAt(irow, 0).toString();
+					String tenkh = tbl1.getValueAt(irow, 1).toString();
+					String biensoxe = tbl1.getValueAt(irow, 2).toString();
+					String sdt = tbl1.getValueAt(irow, 3).toString();
+					String loaixethang = (String) tbl1.getValueAt(irow, 4).toString();
+					String mauxethang = tbl1.getValueAt(irow, 5).toString();
+					String giavethang = tbl1.getValueAt(irow, 6).toString();
+
+					jtMave.setText(mave);
+					jtTenKH.setText(tenkh);
+					jtBSX.setText(biensoxe);
+					jtSdt.setText(sdt);
+					cbloaixe1.setSelectedItem(loaixethang);
+					jtMauxeThang.setText(mauxethang);
+					jtGiaveThang.setText(giavethang);
+				}
+			}
+		});
 
 		JScrollPane sc1 = new JScrollPane(tbl1);
 		pnTableDangki.add(sc1);
@@ -611,7 +707,7 @@ public class View extends JFrame implements ActionListener {
 		JLabel jlThanhtien = new JLabel("                                             Thành tiền");
 		JTextField jtThanhtien = new JTextField(20);
 		JButton jbThongke = new JButton("Thống kê");
-		jbThongke.setIcon(new ImageIcon(View.class.getResource("/Icon/icons8-circle-chart-20.png")));
+		jbThongke.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-circle-chart-20.png")));
 		jbThongke.setFont(new java.awt.Font("Arial", Font.BOLD + Font.ITALIC, 14));
 
 		// ADD THONG KE
@@ -648,13 +744,9 @@ public class View extends JFrame implements ActionListener {
 		dm2.addColumn("Giá vé");
 		dm2.addColumn("Thời gian vào");
 		dm2.addColumn("Thời gian ra");
-		
+
 		try {
-			String url = "jdbc:sqlserver://DESKTOP-12J6D6C\\SQLEXPRESS;databaseName=Quanlybaigiuxe;"
-					+ "portNumber=1433;encrypt=true;trustServerCertificate=true;sslProtocol=TLSv1.2";
-			String username = "sa";
-			String password = "123";
-			Connection c = DriverManager.getConnection(url, username, password);
+			Connection c = DBConnection.getConnection();
 			Statement statement = c.createStatement();
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM Quanly");
 
@@ -699,7 +791,7 @@ public class View extends JFrame implements ActionListener {
 
 		// ADD LISTENER
 
-		menuHome.addActionListener(new ActionListener() {
+		menuTrangchu.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				CardLayout cl = (CardLayout) pnCenter.getLayout();
@@ -727,17 +819,21 @@ public class View extends JFrame implements ActionListener {
 				cl.show(pnCenter, "Thongke");
 			}
 		});
+		menuExit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
 
 	}
 
 	public static void main(String[] args) {
-		new View();
+		new ViewMain();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

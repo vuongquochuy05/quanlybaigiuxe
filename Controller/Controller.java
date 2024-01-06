@@ -2,21 +2,15 @@ package Controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 
-import DBConnection.DBConnection;
-import View.View;
+import View.ViewMain;
 
 public class Controller implements ActionListener {
-	private View view;
+	private ViewMain view;
 
 	public Controller() {
 		this.view = view;
@@ -32,6 +26,7 @@ public class Controller implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		
 
 	}
 }

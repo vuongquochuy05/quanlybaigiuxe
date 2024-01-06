@@ -1,6 +1,6 @@
 package Test;
 
-import View.View;
+import View.ViewMain;
 import View.ViewDangNhap;
 
 public class TestView {
