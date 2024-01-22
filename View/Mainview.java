@@ -277,7 +277,7 @@ public class Mainview extends JFrame implements ActionListener {
 					dm.addRow(new Object[] { mathe, bienso, loaixe, mauxe, giave, date1 });
 
 				} catch (SQLException e2) {
-					JOptionPane.showMessageDialog(Mainview.this, "Mã vé trùng lặp!");
+					JOptionPane.showMessageDialog(Mainview.this, "Thêm thông tin không thành công! Vui lòng kiểm tra lại thông tin.");
 				}
 
 				jtmathe.setText("");
@@ -561,7 +561,7 @@ public class Mainview extends JFrame implements ActionListener {
 					dm1.addRow(new Object[] { mave, tenkh, biensoxe, sdt, loaixethang, mauxethang, giavethang, date2 });
 
 				} catch (SQLException e2) {
-					JOptionPane.showMessageDialog(Mainview.this, "Mã thẻ trùng lặp!");
+					JOptionPane.showMessageDialog(Mainview.this, "Thêm thông tin không thành công! Vui lòng kiểm tra lại thông tin.");
 				}
 
 				jtMave.setText("");
@@ -604,7 +604,7 @@ public class Mainview extends JFrame implements ActionListener {
 						dm1.setValueAt(Integer.parseInt(mave), rowupdate1, 0);
 						dm1.setValueAt(tenkh, rowupdate1, 1);
 						dm1.setValueAt(biensoxe, rowupdate1, 2);
-						dm1.setValueAt(Integer.parseInt(sdt), rowupdate1, 3);
+						dm1.setValueAt(sdt, rowupdate1, 3);
 						dm1.setValueAt(loaixethang, rowupdate1, 4);
 						dm1.setValueAt(mauxethang, rowupdate1, 5);
 						dm1.setValueAt(giavethang, rowupdate1, 6);
