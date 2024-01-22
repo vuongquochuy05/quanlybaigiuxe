@@ -27,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -41,8 +42,8 @@ import javax.swing.table.TableRowSorter;
 
 import DBConnection.DBConnection;
 
-public class ViewMain extends JFrame implements ActionListener {
-	public ViewMain() {
+public class Mainview extends JFrame implements ActionListener {
+	public Mainview() {
 		this.init();
 		this.setTitle("Quản Lý Bãi Giữ Xe");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -53,11 +54,12 @@ public class ViewMain extends JFrame implements ActionListener {
 
 	public void init() {
 
+		// MAIN PANEL
 		final JPanel pnCenter = new JPanel();
 		pnCenter.setLayout(new CardLayout());
 
 		// SET ICON NOTEPAD
-		URL urlIcon = ViewMain.class.getResource("icons8-parking-lot-96.png");
+		URL urlIcon = Mainview.class.getResource("icons8-parking-lot-96.png");
 		Image img = Toolkit.getDefaultToolkit().createImage(urlIcon);
 		this.setIconImage(img);
 
@@ -68,24 +70,21 @@ public class ViewMain extends JFrame implements ActionListener {
 		setJMenuBar(menu);
 		menu.setBackground(Color.LIGHT_GRAY);
 		JMenu menuHome = new JMenu("Trang chủ");
-		menuHome.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-home-20.png")));
+		menuHome.setIcon(new ImageIcon(Mainview.class.getResource("/Icon/icons8-home-20.png")));
 		JMenuItem menuTrangchu = new JMenuItem("Trang chủ");
-		menuTrangchu.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-home-20.png")));
+		menuTrangchu.setIcon(new ImageIcon(Mainview.class.getResource("/Icon/icons8-home-20.png")));
 		JMenuItem menuExit = new JMenuItem("Thoát");
-		menuExit.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-exit-20.png")));
+		menuExit.setIcon(new ImageIcon(Mainview.class.getResource("/Icon/icons8-exit-20.png")));
 		JMenu menuEdit = new JMenu("Chức năng");
-		menuEdit.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-feature-20.png")));
+		menuEdit.setIcon(new ImageIcon(Mainview.class.getResource("/Icon/icons8-feature-20.png")));
 		JMenuItem menuManage = new JMenuItem("Quản lý");
-		menuManage.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-find-user-male-20.png")));
+		menuManage.setIcon(new ImageIcon(Mainview.class.getResource("/Icon/icons8-find-user-male-20.png")));
 		JMenuItem menuRegister = new JMenuItem("Đăng kí vé tháng");
-		menuRegister.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-register-20.png")));
-		JMenuItem menuThongke = new JMenuItem("Thống kê");
-		menuThongke.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-circle-chart-20.png")));
+		menuRegister.setIcon(new ImageIcon(Mainview.class.getResource("/Icon/icons8-register-20.png")));
 		menuHome.add(menuTrangchu);
 		menuHome.add(menuExit);
 		menuEdit.add(menuManage);
 		menuEdit.add(menuRegister);
-		menuEdit.add(menuThongke);
 		menu.add(menuHome);
 		menu.add(menuEdit);
 		this.setLayout(new BorderLayout());
@@ -97,7 +96,7 @@ public class ViewMain extends JFrame implements ActionListener {
 		pnCard1.setLayout(new BorderLayout());
 		JPanel pnback = new JPanel();
 		JLabel jlback = new JLabel();
-		jlback.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/BackHome.png")));
+		jlback.setIcon(new ImageIcon(Mainview.class.getResource("/Icon/BackHome.png")));
 		pnback.add(jlback);
 		pnCard1.add(pnback);
 
@@ -113,33 +112,25 @@ public class ViewMain extends JFrame implements ActionListener {
 		jpInf.setLayout(new BorderLayout());
 		JPanel jpTable = new JPanel();
 		jpTable.setLayout(new BorderLayout());
+		JPanel jp1 = new JPanel();
+		jp1.setLayout(new BorderLayout());
 
 		// LINE TIM KIEM
 		Border border1 = BorderFactory.createEtchedBorder(Color.black, Color.black);
 		TitledBorder borderTitle1 = BorderFactory.createTitledBorder(border1, "Tìm kiếm");
 		jpSearch.setBorder(borderTitle1);
 
-		// HOP TIM KIEM
-		JLabel jlma = new JLabel("Mã thẻ        ");
-		JTextField jtma = new JTextField(15);
-		JButton btSearch = new JButton("Tìm kiếm");
-		btSearch.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-find-20.png")));
-		btSearch.setFont(new java.awt.Font("Arial", Font.BOLD + Font.ITALIC, 14));
-
-		// ADD HOP TIM KIEM
-		JPanel jpMa2 = new JPanel();
-		jpMa2.setLayout(new FlowLayout());
-		jpMa2.add(jlma);
-		jpMa2.add(jtma);
-		jpMa2.add(btSearch);
-
-		// ADD PANEL TIM KIEM
-		jpSearch.add(jpMa2, BorderLayout.CENTER);
-
 		// LINE THONG TIN
 		Border border2 = BorderFactory.createEtchedBorder(Color.black, Color.black);
 		TitledBorder borderTitle2 = BorderFactory.createTitledBorder(border2, "Thông tin");
 		jpInf.setBorder(borderTitle2);
+
+		// HOP TIM KIEM
+		JLabel jlma = new JLabel("Mã thẻ        ");
+		JTextField jtma = new JTextField(15);
+		JButton btSearch = new JButton("Tìm kiếm");
+		btSearch.setIcon(new ImageIcon(Mainview.class.getResource("/Icon/icons8-find-20.png")));
+		btSearch.setFont(new java.awt.Font("Arial", Font.BOLD + Font.ITALIC, 14));
 
 		// HOP THONG TIN
 		JLabel jlBs = new JLabel("          Biển số xe");
@@ -149,17 +140,16 @@ public class ViewMain extends JFrame implements ActionListener {
 		JLabel jlmau = new JLabel("    Màu xe");
 		JTextField jtBS = new JTextField(20);
 		JTextField jtmathe = new JTextField(20);
-		JTextField jtgia = new JTextField(18);
 		JTextField jtmau = new JTextField(18);
 		JButton jbthem = new JButton("Thêm");
 		Timestamp date1 = new Timestamp(System.currentTimeMillis());
-		jbthem.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-add-20.png")));
+		jbthem.setIcon(new ImageIcon(Mainview.class.getResource("/Icon/icons8-add-20.png")));
 		jbthem.setFont(new java.awt.Font("Arial", Font.BOLD + Font.ITALIC, 14));
 		JButton jbsua = new JButton("Sửa");
-		jbsua.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-update-20.png")));
+		jbsua.setIcon(new ImageIcon(Mainview.class.getResource("/Icon/icons8-update-20.png")));
 		jbsua.setFont(new java.awt.Font("Arial", Font.BOLD + Font.ITALIC, 14));
 		JButton jbxoa = new JButton("Xóa");
-		jbxoa.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-cancel-20.png")));
+		jbxoa.setIcon(new ImageIcon(Mainview.class.getResource("/Icon/icons8-cancel-20.png")));
 		jbxoa.setFont(new java.awt.Font("Arial", Font.BOLD + Font.ITALIC, 14));
 
 		// JCOMBOBOX LOAI XE
@@ -168,6 +158,20 @@ public class ViewMain extends JFrame implements ActionListener {
 		cbloaixe.addItem("Xe máy");
 		cbloaixe.addItem("Xe điện");
 		cbloaixe.addItem("Xe đạp");
+
+		// JCOMBOBOX GIA VE
+		JComboBox<String> cbgia1 = new JComboBox<String>();
+		cbgia1.addItem("30.000");
+		cbgia1.addItem("5.000");
+		cbgia1.addItem("3.000");
+		cbgia1.addItem("2.000");
+
+		// ADD HOP TIM KIEM
+		JPanel jpMa2 = new JPanel();
+		jpMa2.setLayout(new FlowLayout());
+		jpMa2.add(jlma);
+		jpMa2.add(jtma);
+		jpMa2.add(btSearch);
 
 		// ADD HOP THONG TIN
 		JPanel jpthongtin = new JPanel();
@@ -179,7 +183,7 @@ public class ViewMain extends JFrame implements ActionListener {
 		jpthongtin.add(jlloaixe);
 		jpthongtin.add(cbloaixe);
 		jpthongtin.add(jlgia);
-		jpthongtin.add(jtgia);
+		jpthongtin.add(cbgia1);
 		jpthongtin.add(jlmau);
 		jpthongtin.add(jtmau);
 
@@ -189,6 +193,9 @@ public class ViewMain extends JFrame implements ActionListener {
 		jpchange.add(jbthem);
 		jpchange.add(jbsua);
 		jpchange.add(jbxoa);
+
+		// ADD PANEL TIM KIEM
+		jpSearch.add(jpMa2, BorderLayout.CENTER);
 
 		// ADD PANEL THONG TIN
 		jpInf.add(jpthongtin, BorderLayout.NORTH);
@@ -207,7 +214,6 @@ public class ViewMain extends JFrame implements ActionListener {
 		dm.addColumn("Màu xe");
 		dm.addColumn("Giá vé");
 		dm.addColumn("Thời gian vào");
-		dm.addColumn("Thời gian ra");
 
 		try {
 			Connection c = DBConnection.getConnection();
@@ -215,14 +221,13 @@ public class ViewMain extends JFrame implements ActionListener {
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM Quanly");
 
 			while (resultSet.next()) {
-				Object[] row = new Object[7];
+				Object[] row = new Object[6];
 				row[0] = resultSet.getObject(1);
 				row[1] = resultSet.getObject(2);
 				row[2] = resultSet.getObject(3);
 				row[3] = resultSet.getObject(4);
 				row[4] = resultSet.getObject(5);
 				row[5] = resultSet.getObject(6);
-				row[6] = resultSet.getObject(7);
 
 				dm.addRow(row);
 			}
@@ -240,10 +245,10 @@ public class ViewMain extends JFrame implements ActionListener {
 		tbl.setRowSorter(row1);
 		JScrollPane sc = new JScrollPane(tbl);
 		jpTable.add(sc);
+
+		// ADD JPANEL
 		jp.add(jpInf, BorderLayout.CENTER);
 		jp.add(jpSearch, BorderLayout.EAST);
-		JPanel jp1 = new JPanel();
-		jp1.setLayout(new BorderLayout());
 		jp1.add(jp, BorderLayout.NORTH);
 		jp1.add(jpTable, BorderLayout.CENTER);
 		pnCard2.add(jp1);
@@ -256,7 +261,7 @@ public class ViewMain extends JFrame implements ActionListener {
 				String bienso = jtBS.getText();
 				String loaixe = (String) cbloaixe.getSelectedItem();
 				String mauxe = jtmau.getText();
-				String giave = jtgia.getText();
+				String giave = (String) cbgia1.getSelectedItem();
 				String sql = "INSERT INTO Quanly ([Mã thẻ],[Biển số xe],[Loại xe],[Màu xe],[Giá vé],[Thời gian vào]) VALUES (?,?,?,?,?,?)";
 
 				try {
@@ -272,15 +277,14 @@ public class ViewMain extends JFrame implements ActionListener {
 					dm.addRow(new Object[] { mathe, bienso, loaixe, mauxe, giave, date1 });
 
 				} catch (SQLException e2) {
-					e2.printStackTrace();
+					JOptionPane.showMessageDialog(Mainview.this, "Mã vé trùng lặp!");
 				}
-
 
 				jtmathe.setText("");
 				jtBS.setText("");
 				cbloaixe.setSelectedItem(cbloaixe);
 				jtmau.setText("");
-				jtgia.setText("");
+				cbgia1.setSelectedItem(cbgia1);
 
 			}
 		});
@@ -294,7 +298,7 @@ public class ViewMain extends JFrame implements ActionListener {
 				String bienso = jtBS.getText();
 				String loaixe = (String) cbloaixe.getSelectedItem();
 				String mauxe = jtmau.getText();
-				String giave = jtgia.getText();
+				String giave = (String) cbgia1.getSelectedItem();
 				String sql = "UPDATE Quanly SET [Biển số xe] = ?, [Loại xe] = ?, [Màu xe] = ?, [Giá vé] = ?  WHERE [Mã thẻ] = ?";
 
 				try {
@@ -312,7 +316,7 @@ public class ViewMain extends JFrame implements ActionListener {
 						dm.setValueAt(bienso, rowupdate, 1);
 						dm.setValueAt(loaixe, rowupdate, 2);
 						dm.setValueAt(mauxe, rowupdate, 3);
-						dm.setValueAt(Integer.parseInt(giave), rowupdate, 4);
+						dm.setValueAt(giave, rowupdate, 4);
 
 					}
 				} catch (SQLException e2) {
@@ -359,7 +363,7 @@ public class ViewMain extends JFrame implements ActionListener {
 					jtBS.setText(bienso);
 					cbloaixe.setSelectedItem(loaixe);
 					jtmau.setText(mauxe);
-					jtgia.setText(giave);
+					cbgia1.setSelectedItem(giave);
 				}
 			}
 		});
@@ -411,6 +415,7 @@ public class ViewMain extends JFrame implements ActionListener {
 		JTextField jtBSX = new JTextField(20);
 		JTextField jtSdt = new JTextField(20);
 		Timestamp date2 = new Timestamp(System.currentTimeMillis());
+
 		// JCONBOBOX LOAI XE
 		JComboBox<String> cbloaixe1 = new JComboBox<String>();
 		cbloaixe1.addItem("Xe ô tô");
@@ -418,15 +423,22 @@ public class ViewMain extends JFrame implements ActionListener {
 		cbloaixe1.addItem("Xe điện");
 		cbloaixe1.addItem("Xe đạp");
 		JTextField jtMauxeThang = new JTextField(20);
-		JTextField jtGiaveThang = new JTextField(20);
+
+		// JCOMBOBOX GIA VE
+		JComboBox<String> cbgia2 = new JComboBox<String>();
+		cbgia2.addItem("100.000");
+		cbgia2.addItem("50.000");
+		cbgia2.addItem("30.000");
+		cbgia2.addItem("20.000");
+
 		JButton btThem = new JButton("Thêm");
-		btThem.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-add-20.png")));
+		btThem.setIcon(new ImageIcon(Mainview.class.getResource("/Icon/icons8-add-20.png")));
 		btThem.setFont(new java.awt.Font("Arial", Font.BOLD + Font.ITALIC, 14));
 		JButton btSua = new JButton("Sửa");
-		btSua.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-update-20.png")));
+		btSua.setIcon(new ImageIcon(Mainview.class.getResource("/Icon/icons8-update-20.png")));
 		btSua.setFont(new java.awt.Font("Arial", Font.BOLD + Font.ITALIC, 14));
 		JButton btXoa = new JButton("Xóa");
-		btXoa.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-cancel-20.png")));
+		btXoa.setIcon(new ImageIcon(Mainview.class.getResource("/Icon/icons8-cancel-20.png")));
 		btXoa.setFont(new java.awt.Font("Arial", Font.BOLD + Font.ITALIC, 14));
 
 		// ADD THONG TIN
@@ -441,7 +453,7 @@ public class ViewMain extends JFrame implements ActionListener {
 		pnDangki1.add(jlBSX);
 		pnDangki1.add(jtBSX);
 		pnDangki1.add(jlGiaveThang);
-		pnDangki1.add(jtGiaveThang);
+		pnDangki1.add(cbgia2);
 		pnDangki1.add(jlSdt);
 		pnDangki1.add(jtSdt);
 
@@ -462,7 +474,7 @@ public class ViewMain extends JFrame implements ActionListener {
 		JLabel jlmave = new JLabel("Mã thẻ        ");
 		JTextField jtmave = new JTextField(15);
 		JButton btSearch2 = new JButton("Tìm kiếm");
-		btSearch2.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-find-20.png")));
+		btSearch2.setIcon(new ImageIcon(Mainview.class.getResource("/Icon/icons8-find-20.png")));
 		btSearch2.setFont(new java.awt.Font("Arial", Font.BOLD + Font.ITALIC, 14));
 
 		// ADD HOP TIM KIEM
@@ -532,7 +544,7 @@ public class ViewMain extends JFrame implements ActionListener {
 				String sdt = jtSdt.getText();
 				String loaixethang = (String) cbloaixe1.getSelectedItem();
 				String mauxethang = jtMauxeThang.getText();
-				String giavethang = jtGiaveThang.getText();
+				String giavethang = (String) cbgia2.getSelectedItem();
 				String sql = "INSERT INTO Dangki ([Mã thẻ],[Tên khách hàng],[Biển số xe],[Số điện thoại],[Loại xe],[Màu xe],[Giá vé],[Ngày đăng kí]) VALUES (?,?,?,?,?,?,?,?)";
 				try {
 					Connection c = DBConnection.getConnection();
@@ -549,7 +561,7 @@ public class ViewMain extends JFrame implements ActionListener {
 					dm1.addRow(new Object[] { mave, tenkh, biensoxe, sdt, loaixethang, mauxethang, giavethang, date2 });
 
 				} catch (SQLException e2) {
-					e2.printStackTrace();
+					JOptionPane.showMessageDialog(Mainview.this, "Mã thẻ trùng lặp!");
 				}
 
 				jtMave.setText("");
@@ -558,7 +570,7 @@ public class ViewMain extends JFrame implements ActionListener {
 				jtSdt.setText("");
 				cbloaixe1.setSelectedItem(cbloaixe1);
 				jtMauxeThang.setText("");
-				jtGiaveThang.setText("");
+				cbgia2.setSelectedItem(cbgia2);
 			}
 		});
 
@@ -573,7 +585,7 @@ public class ViewMain extends JFrame implements ActionListener {
 				String sdt = jtSdt.getText();
 				String loaixethang = (String) cbloaixe1.getSelectedItem();
 				String mauxethang = jtMauxeThang.getText();
-				String giavethang = jtGiaveThang.getText();
+				String giavethang = (String) cbgia2.getSelectedItem();
 				String sql = "UPDATE Dangki SET [Tên khách hàng] = ?, [Biển số xe] = ?, [Số điện thoại] = ?, [Loại xe] = ?, [Màu xe] = ?, [Giá vé] = ?  WHERE [Mã thẻ] = ?";
 
 				try {
@@ -595,7 +607,7 @@ public class ViewMain extends JFrame implements ActionListener {
 						dm1.setValueAt(Integer.parseInt(sdt), rowupdate1, 3);
 						dm1.setValueAt(loaixethang, rowupdate1, 4);
 						dm1.setValueAt(mauxethang, rowupdate1, 5);
-						dm1.setValueAt(Integer.parseInt(giavethang), rowupdate1, 6);
+						dm1.setValueAt(giavethang, rowupdate1, 6);
 					}
 				} catch (SQLException e1) {
 					e1.printStackTrace();
@@ -649,7 +661,7 @@ public class ViewMain extends JFrame implements ActionListener {
 					String sdt = tbl1.getValueAt(irow, 3).toString();
 					String loaixethang = (String) tbl1.getValueAt(irow, 4).toString();
 					String mauxethang = tbl1.getValueAt(irow, 5).toString();
-					String giavethang = tbl1.getValueAt(irow, 6).toString();
+					String giavethang = (String) tbl1.getValueAt(irow, 6).toString();
 
 					jtMave.setText(mave);
 					jtTenKH.setText(tenkh);
@@ -657,7 +669,7 @@ public class ViewMain extends JFrame implements ActionListener {
 					jtSdt.setText(sdt);
 					cbloaixe1.setSelectedItem(loaixethang);
 					jtMauxeThang.setText(mauxethang);
-					jtGiaveThang.setText(giavethang);
+					cbgia2.setSelectedItem(giavethang);
 				}
 			}
 		});
@@ -670,121 +682,11 @@ public class ViewMain extends JFrame implements ActionListener {
 		jp2.add(pnTableDangki, BorderLayout.SOUTH);
 		pnCard3.add(jp2);
 
-		// CARD 4
-		final JPanel pnCard4 = new JPanel();
-		pnCard4.setLayout(new BorderLayout());
-		// PANEL
-		JPanel pnThongke = new JPanel();
-		pnThongke.setLayout(new BorderLayout());
-		JPanel jpTable1 = new JPanel();
-		jpTable1.setLayout(new BorderLayout());
-
-		// LINE THONG KE
-		Border border4 = BorderFactory.createEtchedBorder(Color.black, Color.black);
-		TitledBorder borderTitle4 = BorderFactory.createTitledBorder(border4, "Thống kê");
-		pnThongke.setBorder(borderTitle4);
-
-		// Panel thong ke
-		JPanel pnThongke1 = new JPanel();
-		pnThongke1.setLayout(new FlowLayout());
-		JPanel pnThongke2 = new JPanel();
-		pnThongke2.setLayout(new BorderLayout());
-		JPanel pnThongke3 = new JPanel();
-		pnThongke3.setLayout(new GridLayout(2, 2, 15, 8));
-		JPanel pnThongke4 = new JPanel();
-		pnThongke4.setLayout(new FlowLayout());
-
-		// HOP THONG KE
-		JLabel jlloaixe2 = new JLabel("    Loại xe");
-		JComboBox<String> cbloaixe2 = new JComboBox<String>();
-		cbloaixe2.addItem("Xe ô tô");
-		cbloaixe2.addItem("Xe máy");
-		cbloaixe2.addItem("Xe điện");
-		cbloaixe2.addItem("Xe đạp");
-		cbloaixe2.addItem("Tất cả");
-		JLabel jlTongxe = new JLabel("                                             Tổng số xe");
-		JTextField jtTongxe = new JTextField(20);
-		JLabel jlThanhtien = new JLabel("                                             Thành tiền");
-		JTextField jtThanhtien = new JTextField(20);
-		JButton jbThongke = new JButton("Thống kê");
-		jbThongke.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/icons8-circle-chart-20.png")));
-		jbThongke.setFont(new java.awt.Font("Arial", Font.BOLD + Font.ITALIC, 14));
-
-		// ADD THONG KE
-		pnThongke1.add(jlloaixe2);
-		pnThongke1.add(cbloaixe2);
-		pnThongke2.add(jpTable1);
-		pnThongke3.add(jlTongxe);
-		pnThongke3.add(jtTongxe);
-		pnThongke3.add(jlThanhtien);
-		pnThongke3.add(jtThanhtien);
-		pnThongke4.add(jbThongke);
-
-		// PANEL THONG KE
-		JPanel pn5 = new JPanel();
-		pn5.setLayout(new BorderLayout());
-		pn5.add(pnThongke3, BorderLayout.CENTER);
-		pn5.add(pnThongke4, BorderLayout.SOUTH);
-		// ADD PANEL
-		pnThongke.add(pnThongke1, BorderLayout.WEST);
-		pnThongke.add(pnThongke2, BorderLayout.CENTER);
-		pnThongke.add(pn5, BorderLayout.SOUTH);
-
-		// LINE TABLE
-		Border border7 = BorderFactory.createEtchedBorder(Color.black, Color.black);
-		TitledBorder borderTitle7 = BorderFactory.createTitledBorder(border7, "Danh sách");
-		jpTable1.setBorder(borderTitle7);
-
-		// TABLE
-		DefaultTableModel dm2 = new DefaultTableModel();
-		dm2.addColumn("Mã thẻ");
-		dm2.addColumn("Biển số xe");
-		dm2.addColumn("Loại xe");
-		dm2.addColumn("Màu xe");
-		dm2.addColumn("Giá vé");
-		dm2.addColumn("Thời gian vào");
-		dm2.addColumn("Thời gian ra");
-
-		try {
-			Connection c = DBConnection.getConnection();
-			Statement statement = c.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM Quanly");
-
-			while (resultSet.next()) {
-				Object[] row = new Object[7];
-				row[0] = resultSet.getObject(1);
-				row[1] = resultSet.getObject(2);
-				row[2] = resultSet.getObject(3);
-				row[3] = resultSet.getObject(4);
-				row[4] = resultSet.getObject(5);
-				row[5] = resultSet.getObject(6);
-				row[6] = resultSet.getObject(7);
-
-				dm2.addRow(row);
-			}
-
-			resultSet.close();
-			statement.close();
-			c.close();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		final JTable tbl2 = new JTable(dm2);
-		JScrollPane sc2 = new JScrollPane(tbl2);
-		jpTable1.add(sc2);
-		JPanel jp3 = new JPanel();
-		jp3.setLayout(new BorderLayout());
-		jp3.add(pnThongke, BorderLayout.CENTER);
-		pnCard4.add(jp3);
-
 		// ADD pnCenter
 
 		pnCenter.add(pnCard1, "Trangchu");
 		pnCenter.add(pnCard2, "Quanly");
 		pnCenter.add(pnCard3, "Dangki");
-		pnCenter.add(pnCard4, "Thongke");
 
 		this.setLayout(new BorderLayout());
 		this.add(pnCenter);
@@ -812,13 +714,6 @@ public class ViewMain extends JFrame implements ActionListener {
 				cl.show(pnCenter, "Dangki");
 			}
 		});
-		menuThongke.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				CardLayout cl = (CardLayout) pnCenter.getLayout();
-				cl.show(pnCenter, "Thongke");
-			}
-		});
 		menuExit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -829,7 +724,7 @@ public class ViewMain extends JFrame implements ActionListener {
 	}
 
 	public static void main(String[] args) {
-		new ViewMain();
+		new Mainview();
 	}
 
 	@Override

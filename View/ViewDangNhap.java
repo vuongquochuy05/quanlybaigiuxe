@@ -41,7 +41,7 @@ public class ViewDangNhap extends JFrame {
 		this.setBackground(Color.WHITE);
 
 		// Set icon notepad
-		URL urlIcon = ViewMain.class.getResource("icons8-user-shield-96.png");
+		URL urlIcon = Mainview.class.getResource("icons8-user-shield-96.png");
 		Image img = Toolkit.getDefaultToolkit().createImage(urlIcon);
 		this.setIconImage(img);
 
@@ -68,7 +68,7 @@ public class ViewDangNhap extends JFrame {
 		JPanel pnpic = new JPanel();
 		pnpic.setLayout(new FlowLayout());
 		JLabel jllog = new JLabel();
-		jllog.setIcon(new ImageIcon(ViewMain.class.getResource("/Icon/log.png")));
+		jllog.setIcon(new ImageIcon(Mainview.class.getResource("/Icon/log.png")));
 		pnpic.add(jllog, BorderLayout.CENTER);
 
 		// Add panel rong
@@ -133,7 +133,7 @@ public class ViewDangNhap extends JFrame {
 	}
 
 	private void View() {
-		ViewMain view = new ViewMain();
+		Mainview view = new Mainview();
 		view.setVisible(true);
 	}
 

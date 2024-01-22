@@ -7,10 +7,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 
-import View.ViewMain;
+import View.Mainview;
 
 public class Controller implements ActionListener {
-	private ViewMain view;
+	private Mainview view;
 
 	public Controller() {
 		this.view = view;
