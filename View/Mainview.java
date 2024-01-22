@@ -277,7 +277,8 @@ public class Mainview extends JFrame implements ActionListener {
 					dm.addRow(new Object[] { mathe, bienso, loaixe, mauxe, giave, date1 });
 
 				} catch (SQLException e2) {
-					JOptionPane.showMessageDialog(Mainview.this, "Thêm thông tin không thành công! Vui lòng kiểm tra lại thông tin.");
+					JOptionPane.showMessageDialog(Mainview.this,
+							"Thêm thông tin không thành công! Vui lòng kiểm tra lại thông tin.");
 				}
 
 				jtmathe.setText("");
@@ -561,7 +562,8 @@ public class Mainview extends JFrame implements ActionListener {
 					dm1.addRow(new Object[] { mave, tenkh, biensoxe, sdt, loaixethang, mauxethang, giavethang, date2 });
 
 				} catch (SQLException e2) {
-					JOptionPane.showMessageDialog(Mainview.this, "Thêm thông tin không thành công! Vui lòng kiểm tra lại thông tin.");
+					JOptionPane.showMessageDialog(Mainview.this,
+							"Thêm thông tin không thành công! Vui lòng kiểm tra lại thông tin.");
 				}
 
 				jtMave.setText("");
